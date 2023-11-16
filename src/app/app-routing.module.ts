@@ -1,15 +1,30 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
-import { ProductListComponent } from './products/product-list.component';
-import { ProductDetailComponent } from './products/product-detail.component';
-import { WelcomeComponent } from './home/welcome.component';
-import { productDetailGuard } from './products/product-detail.guard';
+import { RouterModule } from '@angular/router';
 
-const routes: Routes = [
-];
+import { ShellComponent } from './home/shell.component';
+import { WelcomeComponent } from './home/welcome.component';
+import { PageNotFoundComponent } from './home/page-not-found.component';
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [
+    RouterModule.forRoot([
+      {
+        path: '',
+        component: ShellComponent,
+        children: [
+          { path: 'welcome', component: WelcomeComponent },
+          {
+            path: 'products',
+            // canActivate: [AuthGuard],
+            loadChildren: () =>
+              import('./products/product.module').then(m => m.ProductModule)
+          },
+          { path: '', redirectTo: 'welcome', pathMatch: 'full' },
+        ]
+      },
+      { path: '**', component: PageNotFoundComponent }
+    ]) // , { enableTracing: true })
+  ],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
