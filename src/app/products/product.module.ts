@@ -8,6 +8,8 @@ import { SharedModule } from '../shared/shared.module';
 import { ProductEditComponent } from './product-edit.component';
 import { ProductEditGuard } from './product-edit.guard';
 import { ReactiveFormsModule } from '@angular/forms';
+import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { ProductData } from './product-data';
 
 @NgModule({
   declarations: [
@@ -17,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     ProductEditComponent,
   ],
   imports: [
+    InMemoryWebApiModule.forRoot(ProductData),
     RouterModule.forChild([
       { path: 'products', component: ProductListComponent },
       { 

@@ -32,8 +32,10 @@ export class ProductListComponent implements OnInit, OnDestroy {
   constructor(private productService: ProductService) {}
 
   ngOnInit(): void {
+    console.log('ssssss')
     this.sub = this.productService.getProducts().subscribe({
       next: products => {
+        console.log('fffff')
         this.products = products
         this.filteredProducts = this.products
       },

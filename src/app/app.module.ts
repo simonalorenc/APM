@@ -6,11 +6,15 @@ import { AppComponent } from './app.component';
 import { WelcomeComponent } from './home/welcome.component';
 import { ProductModule } from './products/product.module';
 import { RouterModule } from '@angular/router';
+import { MenuComponent } from './home/menu.component';
+import { ShellComponent } from './home/shell.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    MenuComponent,
+    ShellComponent
   ],
   imports: [
     BrowserModule,

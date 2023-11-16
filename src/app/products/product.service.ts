@@ -11,7 +11,7 @@ import { Observable, catchError, map, of, tap, throwError } from 'rxjs';
   providedIn: 'root',
 })
 export class ProductService {
-  private productUrl = 'assets/products/products.json';
+  private productUrl = 'api/products';
 
   constructor(private http: HttpClient) {}
 
@@ -22,14 +22,14 @@ export class ProductService {
     );
   }
 
-  getProduct(id: number): Observable<IProduct | undefined> {
+  getProduct(id: number): Observable<IProduct> {
     if (id === 0) {
       return of(this.initializeProduct());
     }
-    const url = `${this.productUrl}`;
-    return this.http.get<IProduct[]>(url).pipe(
-        map(products => products.find(product => product.productId === id)),
-        tap((data) => console.log('getProduct: ' + JSON.stringify(data))),
+    const url = `${this.productUrl}/${id}`;
+    return this.http.get<IProduct>(url)
+      .pipe(
+        tap(data => console.log('getProduct: ' + JSON.stringify(data))),
         catchError(this.handleError)
       );
   }
@@ -47,7 +47,7 @@ export class ProductService {
 
   createProduct(product: IProduct): Observable<IProduct> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    product.productId = null!;
+    product.id = null!;
     return this.http.post<IProduct>(this.productUrl, product, { headers }).pipe(
       tap((data) => console.log('createProduct: ' + JSON.stringify(data))),
       catchError(this.handleError)
@@ -65,9 +65,9 @@ export class ProductService {
 
   updateProduct(product: IProduct): Observable<IProduct> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
-    const url = `${this.productUrl}/${product.productId}`;
+    const url = `${this.productUrl}/${product.id}`;
     return this.http.put<IProduct>(url, product, { headers }).pipe(
-      tap(() => console.log('updateProduct: ' + product.productId)),
+      tap(() => console.log('updateProduct: ' + product.id)),
       // Return the product on an update
       map(() => product),
       catchError(this.handleError)
@@ -77,7 +77,7 @@ export class ProductService {
   private initializeProduct(): IProduct {
     // Return an initialized object
     return {
-      productId: 0,
+      id: 0,
       productName: null!,
       productCode: null!,
       tags: [''],

@@ -150,7 +150,7 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
     }
     this.product = product;
 
-    if (this.product.productId === 0) {
+    if (this.product.id === 0) {
       this.pageTitle = 'Add Product';
     } else {
       this.pageTitle = `Edit Product: ${this.product.productName}`;
@@ -167,12 +167,12 @@ export class ProductEditComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   deleteProduct(): void {
-    if (this.product.productId === 0) {
+    if (this.product.id === 0) {
       // Don't delete, it was never saved.
       this.onSaveComplete();
     } else {
       if (confirm(`Really delete the product: ${this.product.productName}?`)) {
-        this.productService.deleteProduct(this.product.productId).subscribe({
+        this.productService.deleteProduct(this.product.id).subscribe({
           next: () => this.onSaveComplete(),
           error: (err: any) => (this.errorMessage = err),
         });
